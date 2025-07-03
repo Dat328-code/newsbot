@@ -60,6 +60,8 @@ def monitor():
     print(f"Monitoring SEC 8-K feed every {POLL_INTERVAL} seconds...")
 
     while True:
+        now = datetime.now()
+        print(f"[{now.strftime('%Y-%m-%d %H:%M:%S')}] Polling SEC 8-K feed...")
         try:
             feed = feedparser.parse(SEC_FEED)
             for entry in feed.entries:
@@ -74,7 +76,6 @@ def monitor():
             save_seen(seen)
 
             # Heartbeat
-            now = datetime.now()
             if (now - last_heartbeat) >= timedelta(hours=HEARTBEAT_HOURS):
                 send_email("[SEC Monitor] Bot Heartbeat",
                            f"Bot is still running at {now.isoformat()}.")
